@@ -6,13 +6,19 @@ namespace ProniaMVCPA302.DAL
     public class AppDbContext:DbContext
 
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("server=(localdb)\\MSSQLLocalDB;Database=ProniaMVCPA302;trusted_connection=true;integrated security=true;trustservercertificate=true;");
-            
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options){}
 
-        public DbSet<Slide> Sliders { get; set; }
+        public DbSet<Slide> Slides { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Category> Categories { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Apply all IEntityTypeConfiguration implementations in this assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        }
     }
-}   
+}
