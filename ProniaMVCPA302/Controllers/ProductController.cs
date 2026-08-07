@@ -18,14 +18,14 @@ namespace ProniaMVCPA302.Controllers
         {
             return View();
         }
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id is null || id < 1) return BadRequest();
 
-            Product? product = _context.Products
+            Product? product = await _context.Products
                 .Include(p => p.ProductImages.OrderByDescending(pi => pi.IsPrimary))
                 .Include(p => p.Category)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null) return NotFound();
 
@@ -33,10 +33,11 @@ namespace ProniaMVCPA302.Controllers
             {
                 Product = product,
 
-                RelatedProduct = _context.Products
+                RelatedProduct = await _context.Products
+                .Take(8)
                 .Where(p => p.CategoryId == product.CategoryId && p.Id != id)
                 .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null))
-                .ToList()
+                .ToListAsync()
             }; 
 
             return View(detailVM);

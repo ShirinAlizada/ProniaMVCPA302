@@ -1,9 +1,9 @@
 ﻿
 @model DetailVM
 
-@* @{
+@{
     Product product = Model.Product;
-} *@
+}
 
 <!-- Begin Main Content Area  -->
 <main class="main-content">
@@ -514,10 +514,9 @@
                                     </div>
                                 </div>
                                 <div class="product-content">
-                                    <a class="product-name"
-                                       href="single-product-variable.html">American Marigold</a>
+                                    <a class="product-name" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">@product.Name</a>
                                     <div class="price-box pb-1">
-                                        <span class="new-price">$23.45</span>
+                                        <span class="new-price">$@product.Price</span>
                                     </div>
                                     <div class="rating-box">
                                         <ul>

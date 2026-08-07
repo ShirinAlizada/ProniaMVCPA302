@@ -10,24 +10,24 @@ namespace ProniaMVCPA302.Controllers
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IEmailService _service;
-        public HomeController(AppDbContext context, IEmailService service)
+        
+        public HomeController(AppDbContext context)
         {
             _context = context;
-            _service = service;
+            
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _service.Send();
-            List<Slide> slides = _context.Slides
+            
+            List<Slide> slides = await _context.Slides
                 .OrderBy(s => s.Order)
                 .Take(2)
-                .ToList();
+                .ToListAsync();
 
-            List<Product> products = _context.Products
+            List<Product> products = await _context.Products
                 .Take(8)
                 .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null))
-                .ToList();
+                .ToListAsync();
 
 
 
