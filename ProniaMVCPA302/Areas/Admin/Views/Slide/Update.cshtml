@@ -1,13 +1,11 @@
-﻿@model Slide
-
+﻿
+@model Slide
 
 <div class="row">
-
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Slide</h4>
-                
+                <h4 class="card-title">Basic form elements</h4>
                 <form class="forms-sample" method="post">
                     <div class="form-group">
                         <label asp-for="Title">Title</label>
@@ -26,16 +24,16 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Image">Image</label>
-                        <input asp-for="Image" class="form-control" placeholder="Image">
+                        <input asp-for="Image" class="form-control" placeholder="Image URL">
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label asp-for="Description">Description</label>
-                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <label asp-for="Description">Textarea</label>
+                        <textarea class="form-control" asp-for="Description" id="exampleTextarea1" rows="4"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <button type="submit" class="btn btn-primary me-2">Create</button>
                     <button class="btn btn-light">Cancel</button>
                 </form>
             </div>

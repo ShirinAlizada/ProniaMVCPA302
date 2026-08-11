@@ -6,19 +6,23 @@ using Microsoft.EntityFrameworkCore;
 namespace ProniaMVCPA302.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class HomeController : Controller
+    public class ProductController : Controller
     {
         private readonly AppDbContext _context;
 
-        public HomeController(AppDbContext context)
+        public ProductController(AppDbContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<Slide> slides = await _context.Slides.ToListAsync();
-            return View(slides);
+            List<Product> products = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages.OrderByDescending(pi => pi.IsPrimary))
+                .ToListAsync();
+
+            return View(products);
         }
     }
 }
