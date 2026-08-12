@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProniaMVCPA302.DAL;
 using ProniaMVCPA302.Models;
-using Microsoft.EntityFrameworkCore;
+using ProniaMVCPA302.Utilities.Enums;
+using ProniaMVCPA302.Utilities.Extensions;
 
 namespace ProniaMVCPA302.Areas.Admin.Controllers
 {
@@ -9,10 +11,13 @@ namespace ProniaMVCPA302.Areas.Admin.Controllers
     public class SlideController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public SlideController(AppDbContext context)
+        public SlideController(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
+
         }
         public async Task<IActionResult> Index()
         {
@@ -33,12 +38,29 @@ namespace ProniaMVCPA302.Areas.Admin.Controllers
                 ModelState.AddModelError("Order", "Slide with this order already exists.");
                 return View(slide);
             }
+            if (!slide.Photo.ValidateSize(FileSize.MB, 2))
+            {
+                ModelState.AddModelError("Photo", "Image size must be less than 2MB.");
+                return View(slide);
+            }
+
+            if (!slide.Photo.ValidateType("Image"))
+            {
+                ModelState.AddModelError("Photo", "File type is incorrect");
+                return View(slide);
+            }
+
+
+
             bool result = await _context.Slides.AnyAsync(s => s.Order == slide.Order);
             if (result)
             {
                 ModelState.AddModelError("Title", "Slide with this title already exists.");
                 return View(slide);
             }
+
+            slide.Image = await slide.Photo.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images");
+
             slide.CreatedAt = DateTime.Now;
             _context.Slides.Add(slide);
             await _context.SaveChangesAsync();
