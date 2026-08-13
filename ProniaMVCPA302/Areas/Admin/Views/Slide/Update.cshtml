@@ -1,5 +1,5 @@
 ﻿
-@model Slide
+@model UpdateSlideVm
 
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
@@ -25,8 +25,10 @@
                     <div class="form-group">
                         <img style="width:150px;height:150px;" src="~/assets/images/website-images/@Model.Image" />
                         <br/>
+                        <input asp-for="Image" type="hidden">
+                        <br/>
                         <label asp-for="Photo">Image</label>
-                        <input asp-for="Photo" class="form-control" placeholder="Image">
+                        <input asp-for="Photo" class="form-control">
                         <span asp-validation-for="Photo" class="text-danger"></span>
                     </div>
 

@@ -1,4 +1,5 @@
-﻿using ProniaMVCPA302.Utilities.Enums;
+﻿using Microsoft.AspNetCore.Routing.Constraints;
+using ProniaMVCPA302.Utilities.Enums;
 
 namespace ProniaMVCPA302.Utilities.Extensions
 {
@@ -27,16 +28,38 @@ namespace ProniaMVCPA302.Utilities.Extensions
         {
             string fileName = string.Concat(Guid.NewGuid().ToString(), Path.GetExtension(file.FileName));
 
+            string path = CombinePath(fileName ,roots);
+            
+
+            
+
+            FileStream stream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(stream);
+            return fileName;
+        }
+
+        public static void DeleteFile(this string fileName, params string[] roots)
+        {
+
+            string path = CombinePath(fileName ,roots);
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            
+        }
+
+        private static string CombinePath(string fileName , params string[] roots)
+        {
+
             string path = string.Empty;
             foreach (string folder in roots)
             {
                 path = Path.Combine(path, folder);
             }
             path = Path.Combine(path, fileName);
-
-            FileStream stream = new FileStream(path, FileMode.Create);
-            await file.CopyToAsync(stream);
-            return fileName;
+            return path;
         }
     }
 }

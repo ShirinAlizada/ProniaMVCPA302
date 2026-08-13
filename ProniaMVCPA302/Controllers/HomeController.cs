@@ -24,9 +24,16 @@ namespace ProniaMVCPA302.Controllers
                 .Take(2)
                 .ToListAsync();
 
-            List<Product> products = await _context.Products
+            List<ProductItemVM> productVMs = await _context.Products
                 .Take(8)
-                .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null))
+                .Select(p => new ProductItemVM
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    MainImage = p.ProductImages.FirstOrDefault(pi=>pi.IsPrimary==true).Image,
+                    SecondaryImage = p.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false).Image
+                })
                 .ToListAsync();
 
 
@@ -34,7 +41,7 @@ namespace ProniaMVCPA302.Controllers
             HomeVM homeVM = new HomeVM
             {
                 Slides = slides,
-                Products = products
+                Products = productVMs
             };
             return View(homeVM);
         }

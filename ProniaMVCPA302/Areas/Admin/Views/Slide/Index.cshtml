@@ -1,4 +1,4 @@
-﻿@model List<Slide>
+﻿@model List<SlideItemVM>
 @{
     int count = 0;
 }
@@ -28,12 +28,15 @@
                                     Order
                                 </th>
                                 <th>
+                                    Creation Date
+                                </th>
+                                <th>
                                     Settings
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Slide slide in Model)
+                            @foreach (SlideItemVM slideVM in Model)
                             {
                                 count++;
                                 <tr>
@@ -41,18 +44,21 @@
                                         
                                     </td>
                                     <td>
-                                        <img src="~/assets/images/website-images/@slide.Image" alt="@slide.Title" />
+                                        <img src="~/assets/images/website-images/@slideVM.Image" alt="@slideVM.Title" />
                                     </td>
                                     <td>
-                                        @slide.Title
+                                        @slideVM.Title
                                     </td>
                                     <td>
-                                        @slide.Order
+                                        @slideVM.Order
                                     </td>
                                     <td>
-                                        <a asp-action="update" asp-route-id="@slide.Id" class="btn btn-warning"><i class="mdi mdi-pen"></i></a>
-                                        <a asp-action="delete" asp-route-id="@slide.Id" class="btn btn-danger"><i class="mdi mdi-delete"></i></a>
-                                        <a asp-action="details" asp-route-id="@slide.Id" class="btn btn-primary"><i class="mdi mdi-open-in-new"></i></a>
+                                        @slideVM.CreatedAt
+                                    </td>
+                                    <td>
+                                        <a asp-action="update" asp-route-id="@slideVM.Id" class="btn btn-warning"><i class="mdi mdi-pen"></i></a>
+                                        <a asp-action="delete" asp-route-id="@slideVM.Id" class="btn btn-danger"><i class="mdi mdi-delete"></i></a>
+                                        <a asp-action="details" asp-route-id="@slideVM.Id" class="btn btn-primary"><i class="mdi mdi-open-in-new"></i></a>
                                     </td>
                                 </tr>
                             }
